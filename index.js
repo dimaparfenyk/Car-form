@@ -6,7 +6,6 @@ const refs = {
     yearSelect:document.querySelector('.year-select'),
 };
 
-let isFirstLoadMoreClick = true;
 // получаем массив всех моделей машин
 const models = Array.from(document.querySelectorAll('.checkbox-text')).map(label => label.textContent); 
 // массив популярных машин
@@ -18,7 +17,15 @@ refs.inputField.addEventListener('input', handleSearchInput);
 function handleSearchInput(e) {
   const carBrandName = e.target.value.trim().toLowerCase();
   const filteredModels = filterModels(carBrandName);
+
   renderCarModels(filteredModels);
+
+  if(refs.carBrandList.children.length>21){
+  refs.loadMore.classList.remove('is-hidden');
+  }else{
+  refs.loadMore.classList.add('is-hidden');
+  }
+  
   if(carBrandName===''){
     isFirstLoadMoreClick = false;
   }
@@ -68,12 +75,20 @@ function renderCarModels(models) {
 }
 
 refs.loadMore.addEventListener('click', function() {
-  
+
     const carModelItems = document.querySelectorAll('.car-model-item');
     carModelItems.forEach(function(item) {
           item.style.display = 'flex';
         });
+    toggleLoadMoreVisibility();
   });
+
+  function toggleLoadMoreVisibility() {
+    refs.loadMore.classList.contains('is-hidden') 
+    ? refs.loadMore.classList.remove('is-hidden') 
+    : refs.loadMore.classList.add('is-hidden');
+  }
+
 
 // Добавляем обработчик события для очистки значения input при выборе checkbox
 refs.carBrandList.addEventListener('change', handleCheckboxChange);
@@ -105,3 +120,5 @@ function handleCheckboxChange(e) {
           }
          });  
   });
+
+  

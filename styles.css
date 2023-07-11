@@ -127,6 +127,10 @@
   display: none;
 }
 
+.is-hidden{
+  display: none;
+}
+
 .checkbox-item {
   display: flex;
   justify-content: center;
