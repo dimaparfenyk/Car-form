@@ -6,14 +6,14 @@ const refs = {
     yearSelect:document.querySelector('.year-select'),
 };
 
-// получаем массив всех моделей машин
 const models = Array.from(document.querySelectorAll('.checkbox-text')).map(label => label.textContent); 
-// массив популярных машин
 const popularModels = getCarModelValues();
 
 refs.inputField.addEventListener('input', handleSearchInput);
+refs.loadMore.addEventListener('click', onLoadMoreBtnClick);
+refs.yearsList.addEventListener('click', handleYearsListClick);
+  refs.yearSelect.addEventListener('click', handleYearSelectClick);
 
-// функция обработки события на инпуте 
 function handleSearchInput(e) {
   const carBrandName = e.target.value.trim().toLowerCase();
   const filteredModels = filterModels(carBrandName);
@@ -30,21 +30,6 @@ function handleSearchInput(e) {
     isFirstLoadMoreClick = false;
   }
 }
-// функция которая создает массив из первых 21 брендов автомобилей которые
-// function getCarModelValues() {
-//     const carModelItems = document.querySelectorAll('.car-model-item');
-//     const carModelValues = [];
-  
-//     for (let i = 0; i < carModelItems.length; i++) {
-//       if (i === 21) {
-//         break;
-//       }
-//       const carModelValue = carModelItems[i].querySelector('.checkbox-text').textContent;
-//       carModelValues.push(carModelValue);
-//     }
-  
-//     return carModelValues;
-//   }
 
   function getCarModelValues() {
     const carModelItems = document.querySelectorAll('.car-model-item');
@@ -60,7 +45,6 @@ function handleSearchInput(e) {
     return carModelValues;
   }
 
-// функция производит поиск в массиве по ключевому слову(которое мы вводим в инпуте, т.е input.value)
 function filterModels(carBrandName) {
     return carBrandName === '' ? popularModels : [...models].filter(model => model.toLowerCase().includes(carBrandName));
   }
@@ -74,23 +58,20 @@ function renderCarModels(models) {
   `).join('');
 }
 
-refs.loadMore.addEventListener('click', function() {
+function onLoadMoreBtnClick() {
+  const carModelItems = document.querySelectorAll('.car-model-item');
+  carModelItems.forEach(function(item) {
+        item.style.display = 'flex';
+      });
+  toggleLoadMoreVisibility();
+}
 
-    const carModelItems = document.querySelectorAll('.car-model-item');
-    carModelItems.forEach(function(item) {
-          item.style.display = 'flex';
-        });
-    toggleLoadMoreVisibility();
-  });
-
-  function toggleLoadMoreVisibility() {
+function toggleLoadMoreVisibility() {
     refs.loadMore.classList.contains('is-hidden') 
     ? refs.loadMore.classList.remove('is-hidden') 
     : refs.loadMore.classList.add('is-hidden');
   }
 
-
-// Добавляем обработчик события для очистки значения input при выборе checkbox
 refs.carBrandList.addEventListener('change', handleCheckboxChange);
 
 function handleCheckboxChange(e) {
@@ -99,26 +80,41 @@ function handleCheckboxChange(e) {
     refs.inputField.value = checkbox.labels[0].innerText;
   }
 }
-
-//   Обработка группы с годами
   
   const years=[...refs.yearsList.children];
   
-  refs.yearsList.addEventListener('click', (e)=>{
-      if(e.target.nodeName==='LABEL'){
-         refs.yearSelect.value="";
-      }
-  });
+  // refs.yearsList.addEventListener('click', (e)=>{
+  //     if(e.target.nodeName==='LABEL'){
+  //        refs.yearSelect.value="";
+  //     }
+  // });
   
-  refs.yearSelect.addEventListener('click', (e)=>{
-      if(!e.target.value) return;
+  // refs.yearSelect.addEventListener('click', (e)=>{
+  //     if(!e.target.value) return;
       
-        years.map(year=>{
-          if(year.children[0].checked){
-              year.children[0].checked=false;
-              return;
-          }
-         });  
-  });
+  //       years.map(year=>{
+  //         if(year.children[0].checked){
+  //             year.children[0].checked=false;
+  //             return;
+  //         }
+  //        });  
+  // });
 
+  function handleYearsListClick(e) {
+    if (e.target.nodeName === 'LABEL') {
+      refs.yearSelect.value = '';
+    }
+  }
+  
+  function handleYearSelectClick(e) {
+    if (!e.target.value) return;
+  
+    years.forEach(year => {
+      if (year.children[0].checked) {
+        year.children[0].checked = false;
+      }
+    });
+  }
+  
+  
   

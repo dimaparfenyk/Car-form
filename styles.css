@@ -71,7 +71,8 @@
     max-width: 934px; 
 }
 
-.label span{
+.label span,
+.label-text>span{
   color: rgb(229, 98, 102);
 }
 
@@ -120,7 +121,12 @@
 
 .car-model-item {
   display: flex;
+  cursor: pointer;
   flex-basis: calc((100% - 192px - 24px) / 7);
+}
+
+.car-model-item>.checkbox-input,.checkbox-text{
+  cursor: pointer;
 }
 
 .car-model-item:nth-child(n + 22) {
@@ -199,6 +205,11 @@
 
 .year-item > input {
   display: none;
+  cursor: pointer;
+}
+
+.year-item > label {
+  cursor: pointer;
 }
 
 .year-select {
@@ -211,4 +222,6 @@
   border-radius: 8px;
   border: 1px solid #E7E7E7;
   background: #FBFBFB;
+  cursor: pointer;
 }
+
